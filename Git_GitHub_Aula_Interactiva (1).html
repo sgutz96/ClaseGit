@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git + GitHub | Aula Interactiva</title>
+<style>
+:root{
+  --bg:#0b1020;--panel:#11182b;--panel2:#17213a;--text:#eef3ff;--muted:#a9b4cc;
+  --primary:#6ea8fe;--accent:#7ee2b8;--warn:#ffd166;--danger:#ff7b8a;--line:#283653;
+  --shadow:0 20px 60px rgba(0,0,0,.25);--radius:18px;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 10% 0%,#182653 0,#0b1020 38%);color:var(--text);font-family:Inter,Segoe UI,system-ui,sans-serif;line-height:1.55}
+button{font:inherit}.app{min-height:100vh}
+header{position:sticky;top:0;z-index:50;background:rgba(11,16,32,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{max-width:1250px;margin:auto;display:flex;align-items:center;gap:20px;padding:14px 20px}
+.logo{font-weight:900;white-space:nowrap}.logo span{color:var(--accent)}
+.tabs{display:flex;gap:7px;overflow:auto;scrollbar-width:none;flex:1}.tabs::-webkit-scrollbar{display:none}
+.tab{border:1px solid transparent;background:transparent;color:var(--muted);padding:9px 12px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.tab:hover,.tab.active{background:var(--panel2);color:var(--text);border-color:var(--line)}
+main{max-width:1250px;margin:auto;padding:36px 20px 70px}
+.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:stretch;margin-bottom:30px}
+.card{background:linear-gradient(145deg,rgba(23,33,58,.96),rgba(17,24,43,.96));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px}
+.hero h1{font-size:clamp(2.3rem,6vw,5rem);line-height:.98;margin:0 0 18px;letter-spacing:-.05em}
+.gradient{background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.kicker{color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem}
+.hero p{font-size:1.12rem;color:var(--muted);max-width:750px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.badge{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#0d1528;color:#d9e3fa;font-size:.85rem}
+.hero-side{display:flex;flex-direction:column;justify-content:space-between}.hero-side h3{margin-top:0}
+.progress{height:10px;background:#0b1222;border-radius:99px;overflow:hidden;border:1px solid var(--line)}.progress i{display:block;height:100%;width:12%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:.3s}
+.section{display:none}.section.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:10px 0 22px}.section-head h2{font-size:2.2rem;margin:0}.section-head p{color:var(--muted);max-width:700px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.lesson{border:1px solid var(--line);background:rgba(17,24,43,.85);border-radius:16px;padding:20px}
+.lesson h3{margin:0 0 8px}.lesson p,.lesson li{color:var(--muted)}
+.step{display:grid;grid-template-columns:46px 1fr;gap:15px;margin:14px 0;padding:15px;border:1px solid var(--line);border-radius:14px;background:#0d1528}
+.num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:#08101e;font-weight:900}
+code,kbd{font-family:"Cascadia Code","SFMono-Regular",Consolas,monospace}
+pre{margin:12px 0;background:#070c17;border:1px solid #202d47;border-radius:12px;padding:16px;overflow:auto;color:#e6efff;position:relative}
+.copy{position:absolute;right:9px;top:9px;border:1px solid var(--line);background:#111b30;color:var(--muted);border-radius:8px;padding:5px 8px;cursor:pointer}
+.callout{padding:16px;border-left:4px solid var(--accent);background:rgba(126,226,184,.07);border-radius:10px;margin:18px 0}.warn{border-left-color:var(--warn);background:rgba(255,209,102,.07)}
+.diagram{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:25px 0}.node{padding:15px 18px;border:1px solid var(--line);border-radius:12px;background:#0d1528;text-align:center}.arrow{color:var(--accent);font-size:1.4rem}
+.checklist label{display:block;padding:10px 0;color:var(--muted);cursor:pointer}.checklist input{margin-right:9px;accent-color:var(--accent)}
+.exercise{border:1px solid #315d4f;background:linear-gradient(145deg,rgba(22,55,47,.6),rgba(13,25,31,.8))}
+.exercise .tag{color:var(--accent);font-weight:800}
+.codetabs{margin:12px 0}
+.ctabs-nav{display:flex;gap:6px;margin-bottom:0;flex-wrap:wrap}
+.ctab{border:1px solid var(--line);border-bottom:none;background:#0a1222;color:var(--muted);padding:7px 12px;border-radius:10px 10px 0 0;cursor:pointer;font-size:.82rem;font-weight:700}
+.ctab.active{background:#070c17;color:var(--text);border-color:#202d47}
+.ctab-panel{display:none;margin-top:0!important;border-top-left-radius:0!important}
+.ctab-panel.active{display:block}
+.visual-panel{background:#070c17;border:1px solid #202d47;border-radius:0 12px 12px 12px;padding:16px;color:var(--text)}
+.visual-panel ol{margin:0;padding-left:18px}
+.visual-panel li{margin:7px 0;color:var(--muted)}
+.command-map{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.cmd{padding:14px;background:#0a1222;border:1px solid var(--line);border-radius:10px}.cmd b{display:block;color:var(--primary);margin-bottom:5px}
+footer{max-width:1250px;margin:auto;padding:25px 20px 50px;color:var(--muted);border-top:1px solid var(--line)}
+.nextbar{display:flex;justify-content:space-between;gap:10px;margin-top:28px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:11px 16px;border-radius:10px;cursor:pointer}.btn.primary{background:var(--primary);color:#08101e;border-color:transparent;font-weight:800}
+.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#101a2d;border:1px solid var(--line);padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:100}.toast.show{opacity:1}
+@media(max-width:900px){.hero,.grid2{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.command-map{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){main{padding:24px 14px 50px}.nav{padding:11px 12px}.logo{display:none}.grid,.command-map{grid-template-columns:1fr}.card{padding:19px}.hero h1{font-size:3rem}.section-head{display:block}}
+@media print{header,.nextbar,.copy{display:none!important}.section{display:block!important}.card,.lesson{break-inside:avoid}.hero{grid-template-columns:1fr}body{background:white;color:#111}.card,.lesson{color:#111;border:1px solid #bbb;background:white;box-shadow:none}.lesson p,.lesson li,.section-head p{color:#444}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <nav class="nav">
+    <div class="logo">GIT <span>+</span> GITHUB</div>
+    <div class="tabs" id="tabs"></div>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="card">
+    <div class="kicker">Clase práctica · Aula interactiva</div>
+    <h1>De una carpeta local a un <span class="gradient">proyecto publicado</span>.</h1>
+    <p>Una landing para aprender Git y GitHub haciendo. Cada pestaña explica un concepto, muestra el paso a paso y termina con algo concreto que el estudiante puede construir.</p>
+    <div class="badges"><span class="badge">Git</span><span class="badge">GitHub</span><span class="badge">VS Code</span><span class="badge">Terminal</span><span class="badge">Branches</span><span class="badge">Pull Request</span><span class="badge">Deploy</span></div>
+    <div class="callout"><strong>Regla de la clase:</strong> no memorices comandos. Entiende qué estado tiene tu proyecto y qué quieres conseguir después.</div>
+  </div>
+  <div class="card hero-side">
+    <div>
+      <h3>Ruta de aprendizaje</h3>
+      <p>1. Entender → 2. Crear → 3. Conectar → 4. Versionar → 5. Colaborar → 6. Publicar</p>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem"><span>Progreso de la clase</span><b id="progressText">1 / 8</b></div>
+      <div class="progress"><i id="progressBar"></i></div>
+    </div>
+  </div>
+</section>
+
+<div id="content">
+
+<section class="section active" data-title="Inicio">
+<div class="section-head"><div><div class="kicker">01 · Punto de partida</div><h2>¿Qué problema estamos resolviendo?</h2></div><p>Antes de escribir comandos, entiende por qué existe el control de versiones.</p></div>
+<div class="grid">
+<div class="lesson"><h3>📁 El proyecto crece</h3><p>Hay cambios, archivos nuevos, versiones y personas trabajando. Copiar carpetas como “final-final-ahora-si” no escala.</p></div>
+<div class="lesson"><h3>🕒 Necesitamos historial</h3><p>Queremos saber qué cambió, cuándo cambió y quién hizo el cambio.</p></div>
+<div class="lesson"><h3>🤝 Necesitamos colaborar</h3><p>Git permite versionar. GitHub añade una plataforma para compartir, revisar y colaborar.</p></div>
+</div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🎯 MINI RETO</span><h3>Crea tu proyecto de clase</h3><p>Crea una carpeta llamada <code>mi-primer-repositorio</code> con un archivo <code>index.html</code> que muestre tu nombre, una breve descripción y una lista de 3 tecnologías que quieres aprender.</p></div>
+<div class="nextbar"><span></span><button class="btn primary" onclick="go(1)">Empezar con Git →</button></div>
+</section>
+
+<section class="section" data-title="Git">
+<div class="section-head"><div><div class="kicker">02 · Fundamentos</div><h2>Git: tu máquina del tiempo</h2></div><p>Git registra estados de tu proyecto para que puedas comparar, recuperar y experimentar.</p></div>
+<div class="diagram"><div class="node">📂 Working Directory<br><small>archivos actuales</small></div><div class="arrow">→</div><div class="node">📦 Staging Area<br><small>cambios preparados</small></div><div class="arrow">→</div><div class="node">🧾 Local Repository<br><small>commits</small></div><div class="arrow">→</div><div class="node">☁️ GitHub<br><small>remoto</small></div></div>
+<div class="grid2">
+<div class="lesson"><h3>Inicializar</h3><div class="step"><div class="num">1</div><div><b>Entra a la carpeta</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">cd mi-primer-repositorio</pre><pre class="ctab-panel">cd mi-primer-repositorio</pre><div class="ctab-panel visual-panel"><ol><li>En VS Code: <b>Archivo → Abrir carpeta...</b> y selecciona <code>mi-primer-repositorio</code>.</li></ol></div></div></div></div><div class="step"><div class="num">2</div><div><b>Inicializa Git</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git init</pre><pre class="ctab-panel">git init</pre><div class="ctab-panel visual-panel"><ol><li>Abre el panel <b>Control de código fuente</b> (ícono de rama en la barra lateral) y haz clic en <b>Initialize Repository</b>.</li></ol></div></div></div></div></div>
+<div class="lesson"><h3>Observa lo que ocurre</h3><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git status</pre><pre class="ctab-panel">git status</pre><div class="ctab-panel visual-panel"><ol><li>El panel <b>Control de código fuente</b> lista automáticamente los archivos nuevos y modificados, sin escribir nada.</li></ol></div></div><p>Git te dirá qué archivos están sin seguimiento, modificados o listos para commit.</p><div class="callout">💡 Haz <code>git status</code> constantemente. Es tu tablero de control.</div></div>
+</div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🧪 EJERCICIO</span><h3>Primer checkpoint</h3><p>Ejecuta <code>git init</code>, luego <code>git status</code>. Explica a un compañero qué significa que <code>index.html</code> aparezca como “untracked”.</p></div>
+<div class="nextbar"><button class="btn" onclick="go(0)">← Anterior</button><button class="btn primary" onclick="go(2)">GitHub →</button></div>
+</section>
+
+<section class="section" data-title="GitHub">
+<div class="section-head"><div><div class="kicker">03 · Plataforma</div><h2>Git ≠ GitHub</h2></div><p>Git funciona localmente. GitHub es un servicio donde puedes alojar repositorios Git y trabajar con otras personas.</p></div>
+<div class="grid2">
+<div class="lesson"><h3>Git</h3><ul><li>Control de versiones.</li><li>Funciona en tu equipo.</li><li>Registra commits y ramas.</li><li>No necesita internet para crear commits.</li></ul></div>
+<div class="lesson"><h3>GitHub</h3><ul><li>Alojamiento remoto.</li><li>Colaboración y Pull Requests.</li><li>Issues y proyectos.</li><li>Automatización y opciones de publicación.</li></ul></div>
+</div>
+<div class="lesson" style="margin-top:18px"><h3>Otras opciones</h3><div class="command-map"><div class="cmd"><b>GitHub</b>Colaboración y ecosistema.</div><div class="cmd"><b>GitLab</b>Repositorios y DevOps.</div><div class="cmd"><b>Bitbucket</b>Integración con Atlassian.</div><div class="cmd"><b>Codeberg</b>Alternativa comunitaria.</div></div></div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🎯 EJERCICIO</span><h3>Compara sin memorizar</h3><p>En parejas: expliquen en una frase qué hace Git y qué añade GitHub. Después creen una cuenta de GitHub si todavía no tienen una.</p></div>
+<div class="nextbar"><button class="btn" onclick="go(1)">← Anterior</button><button class="btn primary" onclick="go(3)">Primer commit →</button></div>
+</section>
+
+<section class="section" data-title="Commit">
+<div class="section-head"><div><div class="kicker">04 · Versionar</div><h2>Tu primer commit</h2></div><p>El commit es una fotografía identificable de un estado del proyecto.</p></div>
+<div class="lesson">
+<div class="step"><div class="num">1</div><div><b>Revisa</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git status</pre><pre class="ctab-panel">git status</pre><div class="ctab-panel visual-panel"><ol><li>Mira el panel <b>Control de código fuente</b>: cada archivo cambiado aparece listado ahí.</li></ol></div></div></div></div>
+<div class="step"><div class="num">2</div><div><b>Prepara los archivos</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git add .</pre><pre class="ctab-panel">git add .</pre><div class="ctab-panel visual-panel"><ol><li>Pasa el mouse sobre <b>Changes</b> y haz clic en el ícono <b>+</b> (o el <b>+</b> junto a cada archivo).</li></ol></div></div></div></div>
+<div class="step"><div class="num">3</div><div><b>Crea el checkpoint</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git commit -m "feat: estructura inicial"</pre><pre class="ctab-panel">git commit -m "feat: estructura inicial"</pre><div class="ctab-panel visual-panel"><ol><li>Escribe el mensaje en el cuadro de texto superior y haz clic en el ✓ <b>Commit</b>.</li></ol></div></div></div></div>
+<div class="step"><div class="num">4</div><div><b>Mira el historial</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git log --oneline</pre><pre class="ctab-panel">git log --oneline</pre><div class="ctab-panel visual-panel"><ol><li>Instala la extensión <b>Git Graph</b> o revisa <b>GitHub → History</b> en el panel lateral para ver el historial visualmente.</li></ol></div></div></div></div>
+</div>
+<div class="grid2" style="margin-top:18px">
+<div class="lesson"><h3>¿Qué hace <code>git add</code>?</h3><p>Mueve cambios seleccionados hacia el área de preparación. No crea todavía el commit.</p></div>
+<div class="lesson"><h3>¿Qué hace <code>git commit</code>?</h3><p>Guarda un punto de control en el repositorio local con un mensaje que explica el cambio.</p></div>
+</div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🧪 EJERCICIO</span><h3>Haz dos versiones</h3><p>Después del primer commit, modifica el título de tu <code>index.html</code>, vuelve a ejecutar <code>git status</code>, <code>git diff</code>, <code>git add .</code> y crea un segundo commit.</p></div>
+<div class="nextbar"><button class="btn" onclick="go(2)">← Anterior</button><button class="btn primary" onclick="go(4)">Conectar con GitHub →</button></div>
+</section>
+
+<section class="section" data-title="Conectar">
+<div class="section-head"><div><div class="kicker">05 · Remoto</div><h2>Conecta tu proyecto con GitHub</h2></div><p>Ahora tu historial local tendrá un destino remoto.</p></div>
+<div class="lesson">
+<div class="step"><div class="num">1</div><div><b>Crea un repositorio vacío en GitHub</b><p>Usa un nombre como <code>mi-primer-repositorio</code>. Para esta práctica, evita agregar archivos automáticamente si ya tienes el proyecto local.</p></div></div>
+<div class="step"><div class="num">2</div><div><b>Configura la rama principal</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git branch -M main</pre><pre class="ctab-panel">git branch -M main</pre><div class="ctab-panel visual-panel"><ol><li>El nombre de la rama aparece en la barra inferior izquierda de VS Code; puedes renombrarla haciendo clic ahí.</li></ol></div></div></div></div>
+<div class="step"><div class="num">3</div><div><b>Agrega el remoto y sube la rama</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git remote add origin URL_DEL_REPOSITORIO\ngit push -u origin main</pre><pre class="ctab-panel">git remote add origin URL_DEL_REPOSITORIO\ngit push -u origin main</pre><div class="ctab-panel visual-panel"><ol><li>Si la terminal está bloqueada, usa el botón <b>Publish Branch</b> en Control de código fuente: VS Code puede crear el repositorio remoto y conectarlo por ti (con sesión iniciada en GitHub).</li></ol></div></div></div></div>
+</div>
+<div class="callout warn"><strong>⚠️ Importante:</strong> nunca pegues contraseñas, API keys, tokens o secretos dentro del repositorio. Aprende a usar <code>.gitignore</code> desde el primer proyecto.</div>
+<div class="lesson"><h3>Tu primer <code>.gitignore</code></h3><pre>node_modules/
+.env
+dist/
+.vscode/
+*.log</pre></div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🚀 RETO</span><h3>Tu primer repositorio público</h3><p>Sube tu proyecto, agrega un <code>README.md</code> con descripción, tecnologías, instalación y uso. Después comparte el enlace con el profesor.</p></div>
+<div class="nextbar"><button class="btn" onclick="go(3)">← Anterior</button><button class="btn primary" onclick="go(5)">Trabajar en equipo →</button></div>
+</section>
+
+<section class="section" data-title="Trabajo en equipo">
+<div class="section-head"><div><div class="kicker">06 · Colaboración</div><h2>Branches + Pull Requests</h2></div><p>Las ramas permiten desarrollar cambios sin alterar directamente la rama principal.</p></div>
+<div class="grid2">
+<div class="lesson"><h3>Crear una rama</h3><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git branch desarrollo
+git switch desarrollo</pre><pre class="ctab-panel">git branch desarrollo
+git switch desarrollo</pre><div class="ctab-panel visual-panel"><ol><li>Haz clic en el nombre de la rama en la barra inferior izquierda → <b>Create new branch</b> → escribe <code>desarrollo</code>.</li></ol></div></div><p>También puedes crear y cambiar en una sola operación:</p><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git switch -c desarrollo</pre><pre class="ctab-panel">git switch -c desarrollo</pre><div class="ctab-panel visual-panel"><ol><li>El mismo flujo de <b>Create new branch</b> en la barra inferior crea la rama y cambia a ella automáticamente.</li></ol></div></div></div><div class="lesson"><h3>Publicar la rama</h3><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git push -u origin desarrollo</pre><pre class="ctab-panel">git push -u origin desarrollo</pre><div class="ctab-panel visual-panel"><ol><li>Con la rama <code>desarrollo</code> activa, haz clic en <b>Publish Branch</b> en Control de código fuente.</li></ol></div></div><p>Luego puedes abrir un Pull Request en GitHub para revisar el cambio antes de integrarlo.</p></div>
+</div>
+<div class="lesson" style="margin-top:18px"><h3>Flujo de equipo</h3><div class="diagram"><div class="node">main</div><div class="arrow">←</div><div class="node">feature / desarrollo</div><div class="arrow">→</div><div class="node">Pull Request</div><div class="arrow">→</div><div class="node">Review → Merge</div></div></div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🤝 EJERCICIO EN PAREJAS</span><h3>Simulen un equipo</h3><p>Persona A crea una rama y cambia el contenido de <code>index.html</code>. Persona B revisa el Pull Request. Escriban al menos un comentario y decidan si el cambio puede integrarse.</p></div>
+<div class="nextbar"><button class="btn" onclick="go(4)">← Anterior</button><button class="btn primary" onclick="go(6)">Conflictos →</button></div>
+</section>
+
+<section class="section" data-title="Conflictos">
+<div class="section-head"><div><div class="kicker">07 · Situaciones reales</div><h2>¿Qué pasa cuando hay un conflicto?</h2></div><p>Un conflicto no significa que Git “se dañó”. Significa que necesita ayuda humana para decidir qué versión conservar.</p></div>
+<div class="lesson">
+<div class="step"><div class="num">1</div><div><b>Actualiza tu información</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git pull</pre><pre class="ctab-panel">git pull</pre><div class="ctab-panel visual-panel"><ol><li>Haz clic en el botón de sincronización (flechas circulares) en la barra inferior de VS Code, o en <b>...</b> → <b>Pull</b>.</li></ol></div></div></div></div>
+<div class="step"><div class="num">2</div><div><b>Si Git marca un conflicto, abre el archivo</b><p>Encontrarás marcadores como <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> y <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. En VS Code, el archivo aparece resaltado en rojo dentro de Control de código fuente.</p></div></div>
+<div class="step"><div class="num">3</div><div><b>Decide qué contenido queda</b><p>Edita manualmente el archivo y elimina los marcadores, o usa los botones <b>Accept Current Change</b>, <b>Accept Incoming Change</b> o <b>Accept Both Changes</b> que VS Code muestra sobre el conflicto.</p></div></div>
+<div class="step"><div class="num">4</div><div><b>Registra la resolución</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git add .\ngit commit -m &quot;fix: resuelve conflicto&quot;</pre><pre class="ctab-panel">git add .\ngit commit -m &quot;fix: resuelve conflicto&quot;</pre><div class="ctab-panel visual-panel"><ol><li>Marca el archivo como resuelto (+) y haz clic en ✓ <b>Commit</b>, igual que un commit normal.</li></ol></div></div></div></div>
+</div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">💥 EJERCICIO CONTROLADO</span><h3>Provoca un conflicto</h3><p>Dos estudiantes modifican intencionalmente la misma línea desde ramas diferentes. Intenten integrarlas y resuelvan el conflicto juntos. El objetivo no es evitar el conflicto: es aprender a leerlo.</p></div>
+<div class="callout"><strong>Idea clave:</strong> <code>git pull</code> trae cambios e intenta integrarlos. <code>git fetch</code> actualiza la información remota sin integrar automáticamente esos cambios.</div>
+<div class="nextbar"><button class="btn" onclick="go(5)">← Anterior</button><button class="btn primary" onclick="go(7)">Publicar →</button></div>
+</section>
+
+<section class="section" data-title="Publicar">
+<div class="section-head"><div><div class="kicker">08 · Proyecto final</div><h2>De repositorio a producto</h2></div><p>GitHub puede ser mucho más que “un lugar donde subir código”. Puede convertirse en parte de tu flujo de trabajo.</p></div>
+<div class="grid">
+<div class="lesson"><h3>📄 README</h3><p>Explica qué es el proyecto, cómo instalarlo, cómo usarlo y quién lo construyó.</p></div>
+<div class="lesson"><h3>🐛 Issues</h3><p>Registra tareas, errores, mejoras o ideas de trabajo.</p></div>
+<div class="lesson"><h3>⚙️ Actions</h3><p>Permite automatizar tareas como pruebas, validaciones o despliegues.</p></div>
+</div>
+<div class="lesson" style="margin-top:18px">
+<h3>🌐 GitHub Pages: publica tu sitio</h3>
+<p>GitHub Pages permite convertir un repositorio en un sitio web estático publicado. Es especialmente útil para proyectos HTML, CSS y JavaScript.</p>
+<div class="step"><div class="num">1</div><div><b>Sube tu proyecto</b><p>El repositorio debe contener el sitio, normalmente con un <code>index.html</code> como punto de entrada.</p></div></div>
+<div class="step"><div class="num">2</div><div><b>Abre Settings → Pages</b><p>En GitHub, entra a la configuración del repositorio y busca la sección <strong>Pages</strong>.</p></div></div>
+<div class="step"><div class="num">3</div><div><b>Selecciona la fuente</b><p>Selecciona la rama y la carpeta desde la que GitHub Pages tomará los archivos.</p></div></div>
+<div class="step"><div class="num">4</div><div><b>Visita la URL</b><p>GitHub generará una dirección pública para tu proyecto. En un sitio de proyecto normalmente tendrá la forma <code>usuario.github.io/nombre-repositorio</code>.</p></div></div>
+<div class="callout"><strong>Concepto clave:</strong> GitHub Pages no reemplaza a Git. Git versiona tu proyecto; GitHub almacena el repositorio; GitHub Pages publica una versión web de ese contenido.</div>
+<div class="diagram"><div class="node">💻 HTML/CSS/JS</div><div class="arrow">→</div><div class="node">📦 Git</div><div class="arrow">→</div><div class="node">☁️ GitHub</div><div class="arrow">→</div><div class="node">🌐 GitHub Pages</div></div>
+</div>
+<div class="lesson exercise" style="margin-top:18px"><span class="tag">🏆 PROYECTO FINAL</span><h3>Mi portfolio en GitHub</h3><p>Crea una landing personal sencilla con HTML + CSS. Versiona el proyecto con al menos 4 commits, crea una rama para una mejora, abre un Pull Request, documenta el proyecto en README y publica el resultado.</p>
+<div class="checklist">
+<label><input type="checkbox"> Proyecto creado y funcional</label>
+<label><input type="checkbox"> Repositorio Git inicializado</label>
+<label><input type="checkbox"> Al menos 4 commits claros</label>
+<label><input type="checkbox"> README.md</label>
+<label><input type="checkbox"> .gitignore</label>
+<label><input type="checkbox"> Rama de desarrollo</label>
+<label><input type="checkbox"> Pull Request</label>
+<label><input type="checkbox"> Proyecto publicado</label>
+</div></div>
+<div class="lesson" style="margin-top:18px"><h3>🧠 Cheat Sheet</h3><div class="command-map">
+<div class="cmd"><b>git status</b>ver estado</div>
+<div class="cmd"><b>git add .</b>preparar cambios</div>
+<div class="cmd"><b>git commit</b>crear checkpoint</div>
+<div class="cmd"><b>git push</b>subir cambios</div>
+<div class="cmd"><b>git pull</b>traer + integrar</div>
+<div class="cmd"><b>git fetch</b>traer referencias</div>
+<div class="cmd"><b>git switch</b>cambiar de rama</div>
+<div class="cmd"><b>git log</b>ver historial</div>
+</div></div>
+<div class="nextbar"><button class="btn" onclick="go(6)">← Anterior</button><button class="btn primary" onclick="go(8)">Herramientas →</button></div>
+</section>
+
+
+<section class="section" data-title="Herramientas">
+<div class="section-head">
+  <div><div class="kicker">09 · Herramientas</div><h2>¿Dónde puedo ejecutar Git?</h2></div>
+  <p>Git es el sistema de control de versiones. Terminal, PowerShell, Git Bash y GitHub Desktop son distintas formas de interactuar con Git.</p>
+</div>
+
+<div class="grid" style="grid-template-columns:repeat(4,1fr)">
+  <div class="lesson">
+    <h3>🖥️ Terminal de Windows</h3>
+    <p>Windows Terminal es la aplicación que abre diferentes intérpretes de comandos. Puede trabajar con PowerShell, Command Prompt y otros shells.</p>
+    <p><strong>Idea:</strong> Terminal es el contenedor/interfaz; PowerShell es uno de los intérpretes que puedes ejecutar dentro de ella.</p>
+    <pre>cd mi-primer-repositorio
+git status
+git add .
+git commit -m "feat: primer cambio"
+git push</pre>
+  </div>
+
+  <div class="lesson">
+    <h3>🔷 PowerShell</h3>
+    <p>PowerShell es un shell y lenguaje de automatización de Microsoft. En Windows es una opción habitual para trabajar con Git desde comandos.</p>
+    <p><strong>Idea:</strong> escribes comandos Git igual que en otros shells; lo que cambia principalmente es el shell que interpreta los comandos del sistema.</p>
+    <pre>Get-Location
+Set-Location .\mi-primer-repositorio
+git status
+git log --oneline</pre>
+  </div>
+
+  <div class="lesson">
+    <h3>🐧 Git Bash</h3>
+    <p>Git Bash, incluido con Git for Windows, ofrece un entorno de shell con comandos de estilo Unix junto con Git.</p>
+    <p><strong>Idea:</strong> es muy útil si quieres aprender comandos como <code>ls</code>, <code>pwd</code>, <code>mkdir</code> y combinarlos con Git.</p>
+    <pre>pwd
+ls
+cd mi-primer-repositorio
+git status
+git add .
+git commit -m "feat: cambio"</pre>
+  </div>
+
+  <div class="lesson">
+    <h3>🖱️ Visual (sin terminal)</h3>
+    <p>En algunos computadores o salas de clase la terminal está bloqueada por políticas de seguridad. En ese caso puedes hacer exactamente el mismo trabajo desde la interfaz gráfica.</p>
+    <p><strong>Idea:</strong> VS Code (panel Control de código fuente) y GitHub Desktop hacen las mismas acciones que <code>git status</code>, <code>git add</code>, <code>git commit</code> y <code>git push</code>, con clics en vez de comandos.</p>
+    <div class="callout">💡 Si un aula tiene la terminal restringida, usa VS Code o GitHub Desktop: ningún ejercicio de esta clase requiere obligatoriamente escribir comandos.</div>
+  </div>
+</div>
+
+<div class="lesson" style="margin-top:18px">
+<h3>📊 Comparación rápida</h3>
+<div class="command-map">
+  <div class="cmd"><b>Terminal</b>Aplicación donde abres shells.</div>
+  <div class="cmd"><b>PowerShell</b>Shell de Windows para comandos y automatización.</div>
+  <div class="cmd"><b>Git Bash</b>Shell estilo Unix incluido con Git for Windows.</div>
+  <div class="cmd"><b>GitHub Desktop</b>Interfaz gráfica para trabajar con Git.</div>
+</div>
+<div class="callout"><strong>Regla:</strong> los comandos <code>git status</code>, <code>git add</code>, <code>git commit</code>, <code>git pull</code> y <code>git push</code> son comandos de Git. No son comandos exclusivos de PowerShell, Terminal o Git Bash.</div>
+</div>
+
+<div class="nextbar"><button class="btn" onclick="go(7)">← Publicar</button><button class="btn primary" onclick="go(9)">Crear repo →</button></div>
+</section>
+
+<section class="section" data-title="Crear repo">
+<div class="section-head">
+  <div><div class="kicker">10 &middot; Distintas terminales</div><h2>Crear un repositorio desde cada terminal</h2></div>
+  <p>Antes de hablar de Git, cada terminal tiene su propia forma de crear carpetas y moverte entre ellas. Los comandos de Git son siempre los mismos; lo que cambia es el shell.</p>
+</div>
+
+<div class="grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="lesson">
+    <h3>&#128421;&#65039; CMD (Simbolo del sistema)</h3>
+    <p>El interprete clasico de Windows.</p>
+    <pre>mkdir mi-primer-repositorio
+cd mi-primer-repositorio
+git init</pre>
+  </div>
+  <div class="lesson">
+    <h3>&#128311; PowerShell</h3>
+    <p>Shell de Microsoft, mas moderno que CMD.</p>
+    <pre>New-Item -ItemType Directory mi-primer-repositorio
+Set-Location mi-primer-repositorio
+git init</pre>
+    <p>&#128161; <code>mkdir</code> tambien funciona en PowerShell: es un alias de <code>New-Item</code>.</p>
+  </div>
+  <div class="lesson">
+    <h3>&#128039; Git Bash</h3>
+    <p>Shell estilo Unix incluido con Git for Windows.</p>
+    <pre>mkdir mi-primer-repositorio
+cd mi-primer-repositorio
+git init</pre>
+  </div>
+  <div class="lesson">
+    <h3>&#127822; Terminal (macOS / Linux)</h3>
+    <p>Mismo estilo de comandos que Git Bash, de forma nativa.</p>
+    <pre>mkdir mi-primer-repositorio
+cd mi-primer-repositorio
+git init</pre>
+  </div>
+  <div class="lesson">
+    <h3>&#128433;&#65039; Visual (VS Code)</h3>
+    <p>Si no puedes o no quieres usar la terminal, todo el proceso se hace con clics.</p>
+    <ol style="color:var(--muted);padding-left:18px;margin:0">
+      <li>Crea la carpeta desde el explorador de archivos del sistema.</li>
+      <li><b>Archivo → Abrir carpeta...</b> en VS Code.</li>
+      <li>Panel <b>Control de código fuente → Initialize Repository</b>.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="callout"><strong>Idea clave:</strong> <code>git init</code>, <code>git status</code>, <code>git add</code> y <code>git commit</code> son comandos de Git y se escriben igual en cualquier terminal. Lo unico que cambia entre CMD, PowerShell, Git Bash o una terminal de macOS/Linux es como creas carpetas y te mueves entre ellas.</div>
+
+<div class="lesson" style="margin-top:18px">
+<h3>&#128202; Equivalencias rapidas</h3>
+<div class="command-map">
+  <div class="cmd"><b>Crear carpeta</b>CMD/Git Bash/macOS: <code>mkdir</code> &middot; PowerShell: <code>New-Item -ItemType Directory</code></div>
+  <div class="cmd"><b>Entrar a carpeta</b>Todas: <code>cd</code> &middot; PowerShell tambien: <code>Set-Location</code></div>
+  <div class="cmd"><b>Ver contenido</b>CMD: <code>dir</code> &middot; PowerShell: <code>Get-ChildItem</code> (o <code>ls</code>) &middot; Git Bash/macOS: <code>ls</code></div>
+  <div class="cmd"><b>Iniciar Git</b>Identico en todas: <code>git init</code></div>
+</div>
+</div>
+
+<div class="nextbar"><button class="btn" onclick="go(8)">&larr; Herramientas</button><button class="btn primary" onclick="go(10)">Ejemplo practico &rarr;</button></div>
+</section>
+
+<section class="section" data-title="Ejemplo practico">
+<div class="section-head">
+  <div><div class="kicker">11 &middot; Trabajo practico</div><h2>Ejemplo: crea y sube tu primer repositorio</h2></div>
+  <p>Un recorrido completo, de principio a fin, usando la terminal: crear la carpeta, iniciar Git, hacer commits, crear el repositorio en GitHub y subirlo con un README.</p>
+</div>
+
+<div class="lesson">
+<div class="step"><div class="num">1</div><div><b>Crea la carpeta del proyecto</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">mkdir mi-primer-repositorio&#10;cd mi-primer-repositorio</pre><pre class="ctab-panel">New-Item -ItemType Directory mi-primer-repositorio&#10;Set-Location mi-primer-repositorio</pre><div class="ctab-panel visual-panel"><ol><li>Crea la carpeta desde el explorador de archivos del sistema y luego <b>Archivo &rarr; Abrir carpeta...</b> en VS Code.</li></ol></div></div></div></div>
+<div class="step"><div class="num">2</div><div><b>Crea un archivo</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">echo "&lt;h1&gt;Hola mundo&lt;/h1&gt;" &gt; index.html</pre><pre class="ctab-panel">Set-Content -Path index.html -Value "&lt;h1&gt;Hola mundo&lt;/h1&gt;"</pre><div class="ctab-panel visual-panel"><ol><li>Clic derecho en el panel Explorador de VS Code &rarr; <b>New File...</b> &rarr; nómbralo <code>index.html</code> y escribe el contenido.</li></ol></div></div></div></div>
+<div class="step"><div class="num">3</div><div><b>Inicializa Git</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git init</pre><pre class="ctab-panel">git init</pre><div class="ctab-panel visual-panel"><ol><li>Panel <b>Control de código fuente &rarr; Initialize Repository</b>.</li></ol></div></div></div></div>
+<div class="step"><div class="num">4</div><div><b>Prepara y crea el commit</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git add .&#10;git commit -m &quot;feat: primera version del proyecto&quot;</pre><pre class="ctab-panel">git add .&#10;git commit -m &quot;feat: primera version del proyecto&quot;</pre><div class="ctab-panel visual-panel"><ol><li>Haz clic en <b>+</b> junto a cada archivo, escribe el mensaje y haz clic en ✓ <b>Commit</b>.</li></ol></div></div></div></div>
+<div class="step"><div class="num">5</div><div><b>Crea un repositorio vacio en GitHub</b><p>Ve a github.com, crea un repositorio nuevo (sin README, sin .gitignore) y copia la URL que te entrega. Si terminas todo desde VS Code, este paso también se puede omitir usando <b>Publish Branch</b> en el paso siguiente.</p></div></div>
+<div class="step"><div class="num">6</div><div><b>Conecta y sube tu proyecto</b><div class="codetabs"><div class="ctabs-nav"><button class="ctab active">Terminal / Git Bash</button><button class="ctab">PowerShell</button><button class="ctab">Visual (VS Code)</button></div><pre class="ctab-panel active">git branch -M main&#10;git remote add origin URL_DEL_REPOSITORIO&#10;git push -u origin main</pre><pre class="ctab-panel">git branch -M main&#10;git remote add origin URL_DEL_REPOSITORIO&#10;git push -u origin main</pre><div class="ctab-panel visual-panel"><ol><li>Botón <b>Publish Branch</b> en Control de código fuente: VS Code crea el repositorio en GitHub y lo conecta automáticamente.</li></ol></div></div></div></div>
+</div>
+
+<div class="lesson" style="margin-top:18px">
+<h3>&#128196; Que es el README y por que importa?</h3>
+<p>El <code>README.md</code> es el primer archivo que GitHub muestra al entrar a un repositorio. Es la carta de presentacion del proyecto: explica que es, para que sirve y como usarlo, antes de que alguien revise una sola linea de codigo.</p>
+<p>Un buen README ayuda a que:</p>
+<ul>
+<li>Otra persona (o tu mismo en 6 meses) entienda el proyecto sin tener que preguntarte.</li>
+<li>Un reclutador o companero de equipo confie en que el proyecto esta bien documentado.</li>
+<li>Cualquiera pueda instalar y ejecutar el proyecto siguiendo pasos claros.</li>
+</ul>
+<pre># Mi primer repositorio
+
+Landing sencilla creada para practicar Git y GitHub.
+
+## Tecnologias
+- HTML
+- CSS
+- JavaScript
+
+## Instalacion
+1. Clona el repositorio: git clone URL_DEL_REPOSITORIO
+2. Abre index.html en tu navegador
+
+## Autor
+Tu nombre aqui</pre>
+</div>
+
+<div class="lesson exercise" style="margin-top:18px">
+<span class="tag">&#127919; TRABAJO / EJEMPLO</span>
+<h3>Tu turno</h3>
+<p>Repite este recorrido completo desde tu propia terminal: crea la carpeta del proyecto, inicializa Git, haz al menos dos commits, crea el repositorio en GitHub, conectalo y subelo. Agrega un <code>README.md</code> siguiendo la estructura de arriba y comparte el enlace del repositorio.</p>
+</div>
+
+<div class="nextbar"><button class="btn" onclick="go(9)">&larr; Crear repo</button><button class="btn primary" onclick="go(11)">GitHub Desktop &rarr;</button></div>
+</section>
+
+<section class="section" data-title="GitHub Desktop">
+<div class="section-head">
+  <div><div class="kicker">12 · Interfaz gráfica</div><h2>¿Cómo funciona GitHub Desktop?</h2></div>
+  <p>GitHub Desktop permite trabajar con muchos comandos y flujos de Git mediante una interfaz visual, sin escribirlos todos en la terminal.</p>
+</div>
+
+<div class="grid2">
+  <div class="lesson">
+    <h3>1. Iniciar sesión</h3>
+    <p>Instala GitHub Desktop e inicia sesión con tu cuenta de GitHub para conectar el cliente con tus repositorios remotos.</p>
+  </div>
+  <div class="lesson">
+    <h3>2. Crear o clonar</h3>
+    <p>Puedes crear un repositorio nuevo, agregar uno local existente o clonar un repositorio desde GitHub.</p>
+  </div>
+  <div class="lesson">
+    <h3>3. Editar en VS Code</h3>
+    <p>Abre el proyecto en tu editor y modifica los archivos normalmente.</p>
+  </div>
+  <div class="lesson">
+    <h3>4. Revisar cambios</h3>
+    <p>GitHub Desktop muestra visualmente los archivos modificados y los cambios realizados.</p>
+  </div>
+  <div class="lesson">
+    <h3>5. Commit</h3>
+    <p>Escribes el mensaje del commit y confirmas los cambios desde la interfaz.</p>
+  </div>
+  <div class="lesson">
+    <h3>6. Push / Pull</h3>
+    <p>Publicas tus commits en GitHub con Push y recuperas cambios remotos con Pull.</p>
+  </div>
+</div>
+
+<div class="diagram">
+  <div class="node">📁 Proyecto local</div><div class="arrow">→</div>
+  <div class="node">🖥️ GitHub Desktop</div><div class="arrow">→</div>
+  <div class="node">☁️ GitHub</div>
+</div>
+
+<div class="lesson exercise">
+<span class="tag">🧪 EJERCICIO</span>
+<h3>Haz el mismo flujo sin terminal</h3>
+<p>Agrega tu repositorio a GitHub Desktop. Modifica <code>index.html</code>, revisa el cambio, crea un commit y usa <strong>Push origin</strong>. Después verifica el commit en GitHub.</p>
+</div>
+
+<div class="callout"><strong>Importante:</strong> GitHub Desktop no reemplaza Git; proporciona una interfaz gráfica para trabajar con Git. GitHub documenta que permite realizar acciones como commit, push, pull, clonación y Pull Requests desde la interfaz. citeturn0search0turn0search2</div>
+
+<div class="nextbar"><button class="btn" onclick="go(10)">← Ejemplo práctico</button><button class="btn primary" onclick="go(12)">Flujo completo →</button></div>
+</section>
+
+<section class="section" data-title="Flujo completo">
+<div class="section-head">
+  <div><div class="kicker">13 · Integración</div><h2>Un mismo Git, diferentes herramientas</h2></div>
+  <p>El estudiante puede repetir el mismo flujo usando terminal, PowerShell, Git Bash o GitHub Desktop.</p>
+</div>
+
+<div class="lesson">
+<h3>Flujo básico</h3>
+<div class="step"><div class="num">1</div><div><b>Editar</b><p>Modificar archivos en VS Code u otro editor.</p></div></div>
+<div class="step"><div class="num">2</div><div><b>Comprobar</b><pre>git status</pre></div></div>
+<div class="step"><div class="num">3</div><div><b>Preparar</b><pre>git add .</pre></div></div>
+<div class="step"><div class="num">4</div><div><b>Guardar versión</b><pre>git commit -m "feat: nueva sección"</pre></div></div>
+<div class="step"><div class="num">5</div><div><b>Subir</b><pre>git push</pre></div></div>
+<div class="step"><div class="num">6</div><div><b>Publicar</b><p>GitHub Pages puede servir el sitio cuando el repositorio está configurado para Pages.</p></div></div>
+</div>
+
+<div class="grid2" style="margin-top:18px">
+<div class="lesson">
+<h3>Ruta por terminal</h3>
+<pre>VS Code
+  ↓
+Terminal / PowerShell / Git Bash
+  ↓
+git status
+git add .
+git commit
+git push
+  ↓
+GitHub
+  ↓
+GitHub Pages</pre>
+</div>
+<div class="lesson">
+<h3>Ruta gráfica</h3>
+<pre>VS Code
+  ↓
+GitHub Desktop
+  ↓
+Review changes
+  ↓
+Commit
+  ↓
+Push origin
+  ↓
+GitHub
+  ↓
+GitHub Pages</pre>
+</div>
+</div>
+
+<div class="lesson exercise" style="margin-top:18px">
+<span class="tag">🏆 RETO COMPARATIVO</span>
+<h3>Hazlo de dos maneras</h3>
+<p>Realiza el mismo cambio primero usando Git Bash o PowerShell y después usando GitHub Desktop. Identifica qué acciones son equivalentes: <strong>status → add → commit → push</strong>.</p>
+</div>
+
+<div class="nextbar"><button class="btn" onclick="go(11)">← GitHub Desktop</button><button class="btn primary" onclick="go(13)">GitHub Pages →</button></div>
+</section>
+
+<section class="section" data-title="GitHub Pages">
+<div class="section-head">
+  <div><div class="kicker">14 · Publicación web</div><h2>¿Cómo funciona GitHub Pages?</h2></div>
+  <p>GitHub Pages toma archivos de un repositorio y los publica como un sitio web estático.</p>
+</div>
+
+<div class="grid">
+  <div class="lesson"><h3>📦 Repositorio</h3><p>Contiene tu HTML, CSS, JavaScript, imágenes y demás archivos necesarios para el sitio.</p></div>
+  <div class="lesson"><h3>⚙️ Fuente</h3><p>En la configuración de Pages eliges la fuente de publicación, según el tipo de proyecto y configuración.</p></div>
+  <div class="lesson"><h3>🌐 Sitio</h3><p>GitHub publica el resultado en una dirección web. También puedes utilizar un dominio personalizado.</p></div>
+</div>
+
+<div class="diagram">
+  <div class="node">index.html</div><div class="arrow">+</div>
+  <div class="node">style.css</div><div class="arrow">+</div>
+  <div class="node">script.js</div><div class="arrow">→</div>
+  <div class="node">☁️ GitHub</div><div class="arrow">→</div>
+  <div class="node">🌐 Pages</div>
+</div>
+
+<div class="lesson">
+<h3>Ejemplo de estructura</h3>
+<pre>mi-sitio/
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── app.js
+└── img/
+    └── portada.jpg</pre>
+</div>
+
+<div class="callout"><strong>Ideal para esta clase:</strong> un proyecto HTML + CSS + JavaScript puede terminar con un repositorio público y una URL funcional usando GitHub Pages. GitHub lo describe como un servicio de alojamiento de sitios estáticos que obtiene los archivos desde un repositorio. citeturn0search3</div>
+
+<div class="lesson exercise" style="margin-top:18px">
+<span class="tag">🚀 PROYECTO FINAL</span>
+<h3>Publica tu landing</h3>
+<p>Sube la landing de la clase a GitHub, configura GitHub Pages y comparte la URL. Luego realiza una modificación, haz un nuevo commit y comprueba que el sitio publicado refleje el cambio.</p>
+</div>
+
+<div class="nextbar"><button class="btn" onclick="go(12)">← Flujo completo</button><button class="btn primary" onclick="go(14)">Resumen →</button></div>
+</section>
+
+<section class="section" data-title="Resumen">
+<div class="section-head">
+  <div><div class="kicker">15 · Cierre</div><h2>¿Qué hace cada herramienta?</h2></div>
+  <p>Una sola idea: Git controla versiones; las demás herramientas facilitan distintas partes del trabajo.</p>
+</div>
+
+<div class="lesson">
+<div class="command-map">
+  <div class="cmd"><b>Git</b>Control de versiones.</div>
+  <div class="cmd"><b>GitHub</b>Repositorio remoto y colaboración.</div>
+  <div class="cmd"><b>Terminal</b>Interfaz para abrir y usar shells.</div>
+  <div class="cmd"><b>PowerShell</b>Shell y automatización de Microsoft.</div>
+  <div class="cmd"><b>Git Bash</b>Shell estilo Unix para Git for Windows.</div>
+  <div class="cmd"><b>GitHub Desktop</b>Interfaz gráfica para Git.</div>
+  <div class="cmd"><b>GitHub Pages</b>Publicación de sitios estáticos.</div>
+  <div class="cmd"><b>VS Code</b>Editor donde desarrollas el proyecto.</div>
+</div>
+</div>
+
+<div class="lesson exercise" style="margin-top:18px">
+<span class="tag">🎓 EVIDENCIA DE APRENDIZAJE</span>
+<h3>Explica el recorrido</h3>
+<p>Sin mirar la guía, explica este recorrido: <strong>VS Code → Git → GitHub → GitHub Pages</strong>. Después explica dónde encajan <strong>Terminal, PowerShell, Git Bash y GitHub Desktop</strong>.</p>
+</div>
+
+<div class="nextbar"><button class="btn" onclick="go(13)">← GitHub Pages</button><button class="btn primary" onclick="window.print()">🖨 Imprimir / PDF</button></div>
+</section>
+
+</div>
+</main>
+<footer>Git + GitHub · Aula interactiva · Git, GitHub, Terminal, PowerShell, Git Bash, GitHub Desktop y GitHub Pages.</footer>
+<div class="toast" id="toast">Copiado</div>
+</div>
+
+<script>
+const sections=[...document.querySelectorAll('.section')];
+const tabs=document.getElementById('tabs');
+sections.forEach((s,i)=>{
+  const b=document.createElement('button'); b.className='tab'+(i===0?' active':''); b.textContent=s.dataset.title;
+  b.onclick=()=>go(i); tabs.appendChild(b);
+});
+let current=0;
+function go(i){
+  current=Math.max(0,Math.min(sections.length-1,i));
+  sections.forEach((s,n)=>s.classList.toggle('active',n===current));
+  [...tabs.children].forEach((b,n)=>b.classList.toggle('active',n===current));
+  document.getElementById('progressText').textContent=(current+1)+' / '+sections.length;
+  document.getElementById('progressBar').style.width=((current+1)/sections.length*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ') {e.preventDefault();go(current+1)}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(current-1)}
+  if(e.key==='Home'){e.preventDefault();go(0)}
+  if(e.key==='End'){e.preventDefault();go(sections.length-1)}
+});
+document.querySelectorAll('pre').forEach(pre=>{
+  const btn=document.createElement('button'); btn.className='copy';btn.textContent='Copiar';
+  btn.onclick=async()=>{await navigator.clipboard.writeText(pre.innerText.replace('Copiar','').trim());showToast()};
+  pre.appendChild(btn);
+});
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1100)}
+document.querySelectorAll('.codetabs').forEach(ct=>{
+  const btns=[...ct.querySelectorAll('.ctab')];
+  const panels=[...ct.querySelectorAll('.ctab-panel')];
+  btns.forEach((b,i)=>b.onclick=()=>{
+    btns.forEach(x=>x.classList.remove('active'));
+    panels.forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    panels[i].classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
