@@ -3,21 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Curso práctico de Git y GitHub en español. Aprende repositorios, commits, ramas, push, pull, README.md, README.mdx y publicación de proyectos web.">
-<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-<meta name="theme-color" content="#0f1115">
-<meta name="author" content="Curso práctico de Git y GitHub">
-<meta name="keywords" content="curso Git, GitHub, Git tutorial, Git en español, commits, ramas, repositorios, GitHub Pages, README, README.mdx, control de versiones">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="es_ES">
-<meta property="og:title" content="Curso práctico de Git y GitHub | git log --curso">
-<meta property="og:description" content="Aprende Git y GitHub desde cero: repositorios, commits, ramas, push, pull, README.md, README.mdx y publicación de proyectos web.">
-<meta property="og:site_name" content="git log --curso">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Curso práctico de Git y GitHub">
-<meta name="twitter:description" content="Curso en español para aprender Git, GitHub, commits, ramas, README y publicación web.">
-<!-- Reemplaza la URL por el dominio final al publicar. -->
-<link rel="canonical" href="./git-log-curso.html">
+<meta name="description" content="Curso práctico de Git y GitHub: qué son, cómo crear y conectar repositorios, commits, ramas y cómo publicar tu proyecto.">
 <title>git log --curso</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -536,20 +522,7 @@ pre code{ color:inherit; }
   html{ scroll-behavior:auto; }
   *, *::before, *::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
 }
-
-/* ---------- visual polish v2 ---------- */
-.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--surface),var(--surface-2));box-shadow:0 18px 45px rgba(0,0,0,.16)}
-.hero::after{content:"";position:absolute;right:-90px;top:-100px;width:260px;height:260px;border:1px solid var(--line);border-radius:50%;box-shadow:0 0 0 35px color-mix(in srgb,var(--green) 4%,transparent),0 0 0 70px color-mix(in srgb,var(--green) 3%,transparent);pointer-events:none}
-.panel,.method-card,.compare-wrap{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-.panel:hover,.method-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--green) 42%,var(--line));box-shadow:0 12px 28px rgba(0,0,0,.10)}
-.section-head h2{font-weight:800}
-.section-head h2::after{content:"";display:block;width:52px;height:3px;margin-top:12px;border-radius:99px;background:var(--green)}
-.btn.primary{box-shadow:0 6px 18px color-mix(in srgb,var(--green) 22%,transparent)}
-.rail-btn.active{background:color-mix(in srgb,var(--green) 6%,transparent)}
-.note,.drill{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--line) 40%,transparent)}
-@media (prefers-reduced-motion: reduce){.panel,.method-card{transition:none}.panel:hover,.method-card:hover{transform:none}}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Curso práctico de Git y GitHub","description":"Curso en español sobre Git y GitHub: repositorios, commits, ramas, push, pull, README.md, README.mdx y publicación de proyectos web.","inLanguage":"es","provider":{"@type":"Organization","name":"git log --curso"}}</script>
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -563,7 +536,7 @@ pre code{ color:inherit; }
     <span class="status-chip">
       <span>rama: <b>main</b></span>
       <span class="sep">·</span>
-      <span id="statusPos">commit 1/12</span>
+      <span id="statusPos">commit 1/11</span>
     </span>
     <div class="topbar-tools">
       <button class="icon-btn" id="menuButton" type="button" aria-label="Abrir índice" aria-expanded="false">☰</button>
@@ -577,7 +550,7 @@ pre code{ color:inherit; }
   <nav class="rail" id="rail" aria-label="Índice del curso">
     <p class="rail-title mnav-toggle">ÍNDICE<span></span></p>
     <ul class="rail-list" id="railList"></ul>
-    <div class="rail-progress">avance: <b id="progressLabel">1/12</b></div>
+    <div class="rail-progress">avance: <b id="progressLabel">1/11</b></div>
   </nav>
 
   <main id="contenido">
@@ -586,8 +559,8 @@ pre code{ color:inherit; }
         <span class="dots"><i></i><i></i><i></i></span>
         <span>README.md</span>
       </div>
-      <h1>De tu primera carpeta a <span class="add">git push origin main</span></h1>
-      <p>Aprende Git y GitHub desde cero: crea repositorios, registra cambios con commits, trabaja con ramas, sincroniza con <code>push</code>/<code>pull</code>, documenta con README y publica tu proyecto web.</p>
+      <h1>De <span class="del">final_v2_ahora_si.zip</span> a <span class="add">git push origin main</span></h1>
+      <p>Un recorrido práctico por Git y GitHub: qué son, las distintas formas de usarlos, cómo crear y conectar un repositorio, hacer commits, trabajar con ramas y publicar tu proyecto en la web.</p>
       <div class="hero-flow" aria-hidden="true">
         <span class="flow-stage">directorio de trabajo</span>
         <span class="flow-arrow">→</span>
@@ -597,21 +570,11 @@ pre code{ color:inherit; }
         <span class="flow-arrow">→</span>
         <span class="flow-stage">GitHub (remoto)</span>
       </div>
-      <div id="objetivos-curso" class="panel" style="margin-top:16px">
-        <h2 style="font-size:1.05rem;margin:0 0 8px">Al finalizar este curso podrás</h2>
-        <ul style="margin:0;padding-left:20px;color:var(--muted)">
-          <li>Crear y conectar repositorios locales y remotos.</li>
-          <li>Registrar, revisar y compartir cambios mediante commits.</li>
-          <li>Crear ramas, integrarlas con <code>merge</code> y entender conflictos básicos.</li>
-          <li>Documentar un proyecto con <code>README.md</code> y reconocer cuándo usar <code>README.mdx</code>.</li>
-          <li>Publicar un sitio web y mantenerlo actualizado con Git.</li>
-        </ul>
-      </div>
     </section>
 
     <div id="sections">
 
-<section id="que-es-git" class="section" data-title="Qué es Git" data-hash="a1e9f02">
+<section class="section" data-title="Qué es Git" data-hash="a1e9f02">
   <div class="section-head">
     <span class="hash-tag">a1e9f02</span>
     <h2>¿Qué es Git?</h2>
@@ -1071,96 +1034,6 @@ git branch -d feature/formulario</code></pre>
   <div class="nextbar"><button class="btn" onclick="go(7)">← Trabajar con ramas</button><button class="btn primary" onclick="go(9)">Actividad integradora →</button></div>
 </section>
 
-<section class="section" data-title="README.md y MDX" data-hash="readme01">
-  <div class="section-head">
-    <span class="hash-tag">readme01</span>
-    <h2>README.md y README.mdx</h2>
-    <p>La documentación es parte del proyecto. Un README explica qué es, cómo se instala, cómo se usa y cómo contribuir. <code>.md</code> es Markdown; <code>.mdx</code> combina Markdown con componentes JSX cuando la plataforma de documentación lo admite.</p>
-  </div>
-
-  <div class="row2">
-    <div class="panel">
-      <h3>¿Qué es README.md?</h3>
-      <p>Es un archivo de documentación en formato Markdown. En un repositorio de GitHub suele colocarse en la raíz y GitHub lo muestra como la portada documental del proyecto.</p>
-      <ul>
-        <li><b>Presenta:</b> nombre, propósito y contexto.</li>
-        <li><b>Explica:</b> instalación, uso y comandos.</li>
-        <li><b>Orienta:</b> estructura, contribución y autoría.</li>
-      </ul>
-    </div>
-    <div class="panel">
-      <h3>¿Qué es README.mdx?</h3>
-      <p>MDX permite escribir Markdown e insertar componentes JSX. No es simplemente “un Markdown con otra extensión”: necesita una herramienta que procese MDX y un entorno compatible con componentes.</p>
-      <ul>
-        <li>Útil en documentación interactiva.</li>
-        <li>Permite reutilizar componentes de una interfaz.</li>
-        <li>En GitHub, la compatibilidad con archivos MDX no equivale a que se rendericen como un README estándar.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="panel" style="margin-top:14px">
-    <h3>Estructura recomendada de un README.md</h3>
-    <div class="term">
-      <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>README.md</span></div>
-      <pre><code># Nombre del proyecto
-
-Descripción breve: qué problema resuelve y para quién.
-
-## Demo
-URL_DEL_PROYECTO_PUBLICADO
-
-## Tecnologías
-- HTML
-- CSS
-- JavaScript
-
-## Instalación
-```bash
-git clone URL_DEL_REPOSITORIO
-cd nombre-del-proyecto
-```
-
-## Uso
-Explica cómo ejecutar o utilizar el proyecto.
-
-## Estructura
-Explica las carpetas importantes.
-
-## Autor
-Tu nombre
-
-## Licencia
-Indica la licencia si el proyecto la utiliza.</code></pre>
-    </div>
-  </div>
-
-  <div class="compare-wrap" style="margin-top:14px">
-    <table class="compare">
-      <thead><tr><th>Característica</th><th>README.md</th><th>README.mdx</th></tr></thead>
-      <tbody>
-        <tr><td>Sintaxis base</td><td>Markdown</td><td>Markdown + JSX</td></tr>
-        <tr><td>Componentes JSX</td><td>No</td><td>Sí, si el entorno MDX los procesa</td></tr>
-        <tr><td>Dependencia</td><td>Renderizador Markdown</td><td>Procesador MDX + entorno compatible</td></tr>
-        <tr><td>Uso habitual</td><td>Repositorios y documentación general</td><td>Documentación interactiva y sistemas basados en MDX</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="note">
-    <strong>Regla práctica</strong>
-    Para un proyecto normal en GitHub, empieza con <code>README.md</code>. Usa <code>README.mdx</code> cuando tu stack de documentación indique explícitamente que procesa MDX y necesitas componentes interactivos.
-  </div>
-
-  <div class="drill">
-    <span class="drill-tag">📝 EJERCICIO</span>
-    <h3>Documenta tu proyecto</h3>
-    <p>Crea un <code>README.md</code> para el proyecto del curso. Incluye descripción, tecnologías, instalación, uso, estructura, autor y enlace a la versión publicada.</p>
-  </div>
-
-  <div class="nextbar"><button class="btn" onclick="go(9)">← README.md y MDX</button><button class="btn primary" onclick="go(11)">Resumen y comandos →</button></div>
-</section>
-
 <section class="section" data-title="Actividad" data-hash="ffa1207">
   <div class="section-head">
     <span class="hash-tag">ffa1207</span>
@@ -1200,7 +1073,7 @@ Descripción breve de qué hace el proyecto.
 Tu nombre aquí</code></pre>
   </div>
 
-  <div class="nextbar"><button class="btn" onclick="go(9)">← README.md y MDX</button><button class="btn primary" onclick="go(11)">Resumen y comandos →</button></div>
+  <div class="nextbar"><button class="btn" onclick="go(8)">← Publicar tu proyecto</button><button class="btn primary" onclick="go(10)">Resumen y comandos →</button></div>
 </section>
 
 <section class="section" data-title="Resumen" data-hash="1004aab">
@@ -1238,7 +1111,7 @@ Tu nombre aquí</code></pre>
     </dl>
   </div>
 
-  <div class="nextbar"><button class="btn" onclick="go(10)">← Actividad integradora</button><button class="btn primary" onclick="window.print()">⎙ Imprimir / PDF</button></div>
+  <div class="nextbar"><button class="btn" onclick="go(9)">← Actividad integradora</button><button class="btn primary" onclick="window.print()">⎙ Imprimir / PDF</button></div>
 </section>
 
     </div>

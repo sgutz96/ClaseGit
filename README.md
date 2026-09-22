@@ -1,26 +1,20 @@
-# Git + GitHub · Aula Interactiva
+# git log --curso — versión 2
 
-Versión reorganizada desde cero para uso docente.
+Curso práctico de Git y GitHub en español, con enfoque paso a paso.
 
-## Estructura
+## Mejoras de esta versión
+- Diseño visual refinado con tarjetas, estados, sombras y mejor jerarquía tipográfica.
+- Responsive para escritorio, tablet y móvil.
+- Modo oscuro/claro y navegación por teclado.
+- SEO técnico: `title`, descripción, keywords, robots, Open Graph, Twitter Card, canonical y datos estructurados `Course`.
+- Accesibilidad: idioma `es`, skip link, navegación semántica, `aria-label` y soporte para `prefers-reduced-motion`.
+- Nueva sección completa sobre `README.md` y `README.mdx`.
+- Objetivos de aprendizaje visibles al inicio.
+- Ejemplo de README con demo, instalación, uso, estructura, autor y licencia.
+- Comparación Markdown vs MDX.
 
-- `index.html` → contenido de la clase.
-- `css/styles.css` → diseño, responsive, impresión y tema claro.
-- `js/app.js` → navegación, progreso, tabs de código, copiado, teclado y tema.
-- `assets/` → espacio para imágenes/recursos futuros.
+## Archivos
+- `git-log-curso.html` — curso completo en un único archivo.
 
-## Funcionalidades
-
-- 15 secciones navegables.
-- Barra de progreso.
-- Navegación con botones y teclado.
-- Tabs Terminal / PowerShell / VS Code.
-- Botón para copiar bloques de código.
-- Tema claro/oscuro guardado en el navegador.
-- Diseño responsive.
-- Modo impresión/PDF.
-- Accesibilidad básica con foco, etiquetas y navegación por teclado.
-
-## Uso
-
-Abre `index.html` directamente en el navegador. No requiere servidor ni dependencias externas.
+## Publicación
+Al subirlo a GitHub Pages, cambia la etiqueta `canonical` por la URL absoluta definitiva del sitio.
